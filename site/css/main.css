@@ -540,6 +540,9 @@ html:not(.no-js) [data-reveal].in { opacity: 1; transform: none; }
   .menu-btn { display: block; }
   .hero-inner, .cols, .cols--rev, .night-cols { grid-template-columns: 1fr; }
   .hero-photo img { max-height: 52svh; }
+  .about-photo { max-width: 360px; margin: 0 auto 24px; width: 100%; }
+  .about-photo .chip { right: 6px; bottom: 12px; }
+  .photo-frame img { max-height: 400px; object-fit: cover; object-position: top center; }
   .cards, .mym-grid, .shop-grid { grid-template-columns: 1fr; }
   .shop-grid { grid-template-columns: 1fr 1fr; }
   .connect-card { flex-direction: column; text-align: center; }
