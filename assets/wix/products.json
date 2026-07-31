@@ -1,0 +1,182 @@
+[
+ {
+  "slug": "grateful-hoodie-peach",
+  "name": "Grateful Hoodie (Peach)",
+  "price": "35",
+  "img": "https://static.wixstatic.com/media/c93b3a_9669b1cf16494f709fe82dbb52737b1d~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_9669b1cf16494f709fe82dbb52737b1d~mv2.jpg",
+  "web": "assets/img/shop/cut-9669b1cf1649.webp",
+  "cover": false
+ },
+ {
+  "slug": "grateful-hoodie-yellow",
+  "name": "Grateful Hoodie (Yellow)",
+  "price": "35",
+  "img": "https://static.wixstatic.com/media/c93b3a_9669b1cf16494f709fe82dbb52737b1d~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_9669b1cf16494f709fe82dbb52737b1d~mv2.jpg",
+  "web": "assets/img/shop/cut-9669b1cf1649.webp",
+  "cover": false
+ },
+ {
+  "slug": "grateful-tee-peach",
+  "name": "Grateful Tee (Peach)",
+  "price": "25",
+  "img": "https://static.wixstatic.com/media/c93b3a_9c43ab3de4664bedb2a3b536a6a72e7a~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_9c43ab3de4664bedb2a3b536a6a72e7a~mv2.jpg",
+  "web": "assets/img/shop/cut-9c43ab3de466.webp",
+  "cover": false
+ },
+ {
+  "slug": "grateful-tee-yellow",
+  "name": "Grateful Tee (Yellow)",
+  "price": "25",
+  "img": "https://static.wixstatic.com/media/c93b3a_dd19302381c04485ace8611c5461b249~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_dd19302381c04485ace8611c5461b249~mv2.jpg",
+  "web": "assets/img/shop/cut-dd19302381c0.webp",
+  "cover": false
+ },
+ {
+  "slug": "k-e-m-book-journal",
+  "name": "K.E.M. Book &amp; Journal",
+  "price": "30",
+  "img": "https://static.wixstatic.com/media/c93b3a_68f48d63a19c4ceb8a6218e9c8e8b38e~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_68f48d63a19c4ceb8a6218e9c8e8b38e~mv2.jpg",
+  "web": "assets/img/shop/cover-68f48d63a19c.webp",
+  "cover": true
+ },
+ {
+  "slug": "k-e-m-book",
+  "name": "K.E.M. Book",
+  "price": "20",
+  "img": "https://static.wixstatic.com/media/c93b3a_68f48d63a19c4ceb8a6218e9c8e8b38e~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_68f48d63a19c4ceb8a6218e9c8e8b38e~mv2.jpg",
+  "web": "assets/img/shop/cover-68f48d63a19c.webp",
+  "cover": true
+ },
+ {
+  "slug": "k-e-m-study-guide-journal",
+  "name": "K.E.M. Study Guide Journal",
+  "price": "15",
+  "img": "https://static.wixstatic.com/media/c93b3a_758433238c514d539fd159671d3f139a.jpeg",
+  "desc": "",
+  "file": "c93b3a_758433238c514d539fd159671d3f139a.jpeg",
+  "web": "assets/img/shop/cover-758433238c51.webp",
+  "cover": true
+ },
+ {
+  "slug": "kem-hoodie-black",
+  "name": "KEM Hoodie (Black)",
+  "price": "35",
+  "img": "https://static.wixstatic.com/media/c93b3a_de1484c4b7e54c58bf3c64d0f38a3da0~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_de1484c4b7e54c58bf3c64d0f38a3da0~mv2.jpg",
+  "web": "assets/img/shop/cut-de1484c4b7e5.webp",
+  "cover": false
+ },
+ {
+  "slug": "kem-hoodie-white",
+  "name": "KEM Hoodie (White)",
+  "price": "35",
+  "img": "https://static.wixstatic.com/media/c93b3a_aa6de968c8af4a6991e7bcb11b0a7ca4~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_aa6de968c8af4a6991e7bcb11b0a7ca4~mv2.jpg",
+  "web": "assets/img/shop/cut-aa6de968c8af.webp",
+  "cover": false
+ },
+ {
+  "slug": "kem-tee-black",
+  "name": "KEM Tee (Black)",
+  "price": "25",
+  "img": "https://static.wixstatic.com/media/c93b3a_9f68d467d8bf46e783a915b9f747f1ce~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_9f68d467d8bf46e783a915b9f747f1ce~mv2.jpg",
+  "web": "assets/img/shop/cut-9f68d467d8bf.webp",
+  "cover": false
+ },
+ {
+  "slug": "kem-tee-white",
+  "name": "KEM Tee (White)",
+  "price": "25",
+  "img": "https://static.wixstatic.com/media/c93b3a_4a731db30e214536a6461af6c5236a8f~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_4a731db30e214536a6461af6c5236a8f~mv2.jpg",
+  "web": "assets/img/shop/cut-4a731db30e21.webp",
+  "cover": false
+ },
+ {
+  "slug": "mind-your-manuscript",
+  "name": "Mind Your Manuscript",
+  "price": "25.99",
+  "img": "https://static.wixstatic.com/media/c93b3a_3656cef11acc4c209c30161b41f51fed~mv2.jpg",
+  "desc": "A writing guide for emerging others to inspire and teach them how to write and finish their book(s)",
+  "file": "c93b3a_3656cef11acc4c209c30161b41f51fed~mv2.jpg",
+  "web": "assets/img/shop/cover-3656cef11acc.webp",
+  "cover": true
+ },
+ {
+  "slug": "mind-your-mindtee",
+  "name": "Mind Your MindTee",
+  "price": "25",
+  "img": "https://static.wixstatic.com/media/c93b3a_19a5ab5bb55747e598752742e3bea3f2~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_19a5ab5bb55747e598752742e3bea3f2~mv2.jpg",
+  "web": "assets/img/shop/cut-19a5ab5bb557.webp",
+  "cover": false
+ },
+ {
+  "slug": "night-vision-book-journal",
+  "name": "NIGHT VISION Book &amp; Journal",
+  "price": "25.99",
+  "img": "https://static.wixstatic.com/media/79fc6e_16372dddf800430f92b4b72b492177dc~mv2.jpg",
+  "desc": "",
+  "file": "79fc6e_16372dddf800430f92b4b72b492177dc~mv2.jpg",
+  "web": "assets/img/shop/cover-16372dddf800.webp",
+  "cover": true
+ },
+ {
+  "slug": "night-vision-how-to-see-your-way-though-any-situation",
+  "name": "Night Vision: How to see your way though any situation",
+  "price": "16.99",
+  "img": "https://static.wixstatic.com/media/79fc6e_48b53aeef21c4b5aa8cbd5a9caab898e~mv2.jpg",
+  "desc": "We must be willing to change our perspective about how we view our situations or darkness if you will. That is",
+  "file": "79fc6e_48b53aeef21c4b5aa8cbd5a9caab898e~mv2.jpg",
+  "web": "assets/img/shop/cover-48b53aeef21c.webp",
+  "cover": true
+ },
+ {
+  "slug": "night-vision-the-journal",
+  "name": "NIGHT VISION- THE JOURNAL",
+  "price": "14.99",
+  "img": "https://static.wixstatic.com/media/79fc6e_16372dddf800430f92b4b72b492177dc~mv2.jpg",
+  "desc": "",
+  "file": "79fc6e_16372dddf800430f92b4b72b492177dc~mv2.jpg",
+  "web": "assets/img/shop/cover-16372dddf800.webp",
+  "cover": true
+ },
+ {
+  "slug": "thankful-hoodie",
+  "name": "Thankful Hoodie",
+  "price": "35",
+  "img": "https://static.wixstatic.com/media/c93b3a_05659b73e1344df7bdb2dc2735afd475~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_05659b73e1344df7bdb2dc2735afd475~mv2.jpg",
+  "web": "assets/img/shop/cut-05659b73e134.webp",
+  "cover": false
+ },
+ {
+  "slug": "thankful-tee",
+  "name": "Thankful Tee",
+  "price": "25",
+  "img": "https://static.wixstatic.com/media/c93b3a_9989d6ed755f4ab992c288403c9d5407~mv2.jpg",
+  "desc": "",
+  "file": "c93b3a_9989d6ed755f4ab992c288403c9d5407~mv2.jpg",
+  "web": "assets/img/shop/cut-9989d6ed755f.webp",
+  "cover": false
+ }
+]

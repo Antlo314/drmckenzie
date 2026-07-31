@@ -1,0 +1,14 @@
+# Original imagery (~73 MB) — every file is a byte-for-byte copy of something
+# the Wix CDN still serves. Run `python assets/fetch_sources.py` to restore.
+assets/raw/
+
+# Scraped Wix page dumps (~29 MB) — pure intermediates kept only to extract
+# copy and catalog data. products.json is the distilled result and IS tracked.
+assets/wix/*.html
+assets/wix/prod/
+
+# OS / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
