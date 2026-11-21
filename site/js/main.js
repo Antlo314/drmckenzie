@@ -105,18 +105,26 @@
   // ------------------------------------------------ mobile menu
   const btn = document.querySelector('.menu-btn');
   const mnav = document.querySelector('.mobile-nav');
-  btn.addEventListener('click', () => {
-    const open = mnav.hidden;
+  function setMenuOpen(open) {
     mnav.hidden = !open;
     btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     document.body.style.overflow = open ? 'hidden' : '';
-  });
+  }
+  btn.addEventListener('click', () => setMenuOpen(mnav.hidden));
   mnav.addEventListener('click', e => {
     if (e.target.tagName === 'A') {
-      mnav.hidden = true;
-      btn.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+      setMenuOpen(false);
     }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !mnav.hidden) {
+      setMenuOpen(false);
+      btn.focus();
+    }
+  });
+  matchMedia('(min-width: 1301px)').addEventListener('change', e => {
+    if (e.matches) setMenuOpen(false);
   });
 
   // ------------------------------------------------ card tilt

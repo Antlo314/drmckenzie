@@ -131,19 +131,22 @@ void main(){
   };
   window.__setGLTheme = name => {
     if (!PAL[name]) return;
+    const isDark = palette => palette.base[0] * .299 + palette.base[1] * .587 + palette.base[2] * .114 < .5;
+    const crossesLightnessBoundary = isDark(target) !== isDark(PAL[name]);
     target = PAL[name];
     if (customPalette) {
       const weight = name === 'night' ? .35 : .20;
       const tint = color => target.base.map((base, i) => base * (1 - weight) + color[i] * weight);
       target = { ...target, c1: tint(customPalette[0]), c2: tint(customPalette[1]) };
     }
-    // Snap on the first theme and for reduced motion so the background stays
-    // in sync with the section's text colors.
-    if (!snapped || reduced) {
+    // Keep the background in sync with text when switching between light and
+    // dark sections. Light-to-light palette changes can still fade smoothly.
+    if (!snapped || reduced || crossesLightnessBoundary) {
       snapped = true;
       for (const k of ['base', 'c1', 'c2', 'c3']) for (let i = 0; i < 3; i++) cur[k][i] = target[k][i];
       cur.stars = target.stars; cur.energy = target.energy;
     }
+    if (crossesLightnessBoundary) frame(false);
   };
 
   // ---------------------------------------------------- pointer drift
@@ -172,7 +175,7 @@ void main(){
   });
 
   let tLast = 0;
-  function frame() {
+  function frame(schedule = true) {
     if (!running) return;
     // recover from zero-size init (hidden/background tab at load)
     const wantW = Math.max(2, Math.round(innerWidth * Math.min(devicePixelRatio || 1, 1.5) * 0.5));
@@ -202,7 +205,7 @@ void main(){
     gl.uniform2f(U.uDrift, drift[0], drift[1]);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-    if (!reduced) requestAnimationFrame(frame);
+    if (!reduced && schedule) requestAnimationFrame(frame);
   }
   frame();
   if (reduced) {                       // static frame, but still recolor on section change
