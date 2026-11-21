@@ -481,6 +481,8 @@ html:not(.no-js) [data-reveal].in { opacity: 1; transform: none; }
 .foot-links a { color: var(--muted); text-decoration: none; letter-spacing: .06em; }
 .foot-links a:hover { color: var(--accent); }
 .foot-credit { letter-spacing: .12em; font-size: 11px; opacity: .7; }
+.foot-credit a { color: inherit; text-underline-offset: .2em; }
+.foot-credit a:hover { color: var(--accent); }
 
 /* ============================================================ SUB-PAGES */
 

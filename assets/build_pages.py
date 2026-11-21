@@ -82,7 +82,7 @@ def shell(slug, title, desc, theme, body, og='/assets/img/portrait-full.webp'):
       <a href="/missions/">Donate</a>
       <a href="/shop/">Shop</a>
     </nav>
-    <p class="foot-credit">Crafted by Lumen Labs ATL</p>
+    <p class="foot-credit"><a href="https://lumenlabsatl.com">Lumen</a></p>
   </div>
 </footer>
 
