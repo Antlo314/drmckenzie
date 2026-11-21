@@ -137,10 +137,9 @@ void main(){
       const tint = color => target.base.map((base, i) => base * (1 - weight) + color[i] * weight);
       target = { ...target, c1: tint(customPalette[0]), c2: tint(customPalette[1]) };
     }
-    // The first theme call happens before the visitor has scrolled anywhere,
-    // so jump straight to it — lerping in from the default would land the
-    // page on a colour that belongs to no section.
-    if (!snapped) {
+    // Snap on the first theme and for reduced motion so the background stays
+    // in sync with the section's text colors.
+    if (!snapped || reduced) {
       snapped = true;
       for (const k of ['base', 'c1', 'c2', 'c3']) for (let i = 0; i < 3; i++) cur[k][i] = target[k][i];
       cur.stars = target.stars; cur.energy = target.energy;

@@ -312,12 +312,14 @@ html:not(.no-js) [data-reveal].in { opacity: 1; transform: none; }
 
 /* ---------------------------------------------------------- about */
 .about-photo { position: relative; margin: 0; }
+.about .about-photo { width: min(100%, 420px); justify-self: center; }
 .photo-frame {
   border-radius: 22px; overflow: hidden; border: 1px solid var(--card-line);
   background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 16%, transparent), var(--card) 62%);
   padding: 18px 18px 0; box-shadow: var(--shadow);
 }
 .photo-frame img { width: 100%; display: block; }
+.about .photo-frame img { height: auto; max-height: none; }
 .about-photo .chip { position: absolute; bottom: 18px; right: -12px; box-shadow: var(--shadow-lift); background: var(--card); }
 .motto {
   font-family: var(--font-soft); font-style: italic; font-weight: 340;
@@ -404,6 +406,23 @@ html:not(.no-js) [data-reveal].in { opacity: 1; transform: none; }
 @keyframes breathe { 0%,100% { opacity: .75; transform: translate(-50%,-50%) scale(1); } 50% { opacity: 1; transform: translate(-50%,-50%) scale(1.12); } }
 .book-title { font-family: var(--font-serif); font-size: clamp(22px, 2.6vw, 30px); font-weight: 600; letter-spacing: .04em; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .book-title--kem { margin-top: 34px; }
+.manuscript {
+  display: flex; align-items: center; gap: clamp(18px, 3vw, 26px);
+  margin-top: 34px; padding: 20px;
+  border: 1px solid rgba(190,233,232,.22); border-radius: 14px;
+  background: rgba(255,255,255,.05);
+}
+.manuscript img {
+  width: clamp(76px, 8vw, 100px); height: auto; flex: none;
+  border-radius: 3px; box-shadow: 0 10px 24px rgba(0,0,0,.3);
+}
+.manuscript .book-title { line-height: 1.2; }
+.manuscript .book-title a {
+  color: #e8f1f8; text-decoration-color: #7cc0e8;
+  text-decoration-thickness: 1px; text-underline-offset: .18em;
+}
+.manuscript .book-title a:hover { color: #bee9e8; }
+.manuscript .book-sub { margin-bottom: 0; }
 .amazon-badge { font-family: var(--font-sans); font-size: 10px; letter-spacing: .22em; color: var(--ink); background: var(--gold-soft); border-radius: 99px; padding: 5px 12px; font-weight: 800; }
 .book-sub { color: var(--hot); font-family: var(--font-soft); font-size: 17px; margin: 6px 0 12px; }
 .night-mocks { display: flex; justify-content: center; align-items: flex-end; gap: clamp(10px, 4vw, 50px); margin-top: 70px; }
