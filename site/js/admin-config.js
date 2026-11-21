@@ -1,0 +1,1 @@
+window.KEM_CONFIG={supabaseUrl:"",supabaseAnonKey:""};
