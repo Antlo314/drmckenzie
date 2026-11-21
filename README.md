@@ -138,3 +138,24 @@ Every cutout was proofed at pixel zoom against a dark field — see `assets/proo
 - Forms are `mailto:` / outbound links to the Wix pages — no backend yet.
 - Not registered in the Command deck (no engine, site only).
 - Retreat countdown targets 2026-12-20; update or remove after departure.
+
+## Site admin on Vercel
+
+Deploy with the repository root as the Vercel Root Directory and keep
+`site` as the output directory. The public pages remain static and
+`api/site-content.js` runs as a Vercel Function.
+
+Set these Vercel environment variables before using `/admin`:
+
+- `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` from an Upstash Redis database. Use a separate database for preview deployments if they should publish independently.
+- `DRKEM_ADMIN_PASSWORD`, a strong unique password shared privately with Dr. McKenzie.
+- `DRKEM_SESSION_SECRET`, a separate random secret generated with `openssl rand -hex 32`.
+
+Redeploy after setting the variables. Sign in at `/admin`, edit events or
+appearance, and select **Publish changes**. Unchecked events are saved for
+later and are visible only in admin. Upcoming published events appear on the
+homepage, and `/events` lists upcoming and past published events. The
+announcement is optional. Choosing **Original** restores the original palette.
+Changes go straight to the site and do not require another deploy.
+
+The paid add-on entries are placeholders for billing and feature integrations.

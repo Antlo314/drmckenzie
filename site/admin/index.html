@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" data-theme="connect">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Site Admin | Dr. Kem</title>
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/admin.css">
+<script defer src="/js/admin.js"></script>
+</head>
+<body>
+<main class="wrap admin">
+  <header class="admin-bar">
+    <div><p class="kicker">DR. KEM</p><h1 class="h-serif">Site admin</h1></div>
+    <div><a href="/">View site</a> <button type="button" class="btn btn--line" id="logout" hidden>Sign out</button></div>
+  </header>
+
+  <p id="status" role="status"></p>
+  <form class="admin-panel" id="login" hidden>
+    <h2>Sign in</h2>
+    <label>Admin password <input name="password" type="password" autocomplete="current-password" required></label>
+    <button class="btn btn--solid" type="submit">Sign in</button>
+  </form>
+
+  <form id="editor" hidden>
+    <section class="admin-panel" aria-labelledby="events-heading">
+      <div class="admin-bar">
+        <h2 id="events-heading">Events</h2>
+        <button class="btn btn--line" type="button" id="add-event">Add event</button>
+      </div>
+      <p>Check “Show on site” for events you want visitors to see. Unchecked events stay in the admin area.</p>
+      <div id="event-list"></div>
+    </section>
+
+    <section class="admin-panel" aria-labelledby="appearance-heading">
+      <h2 id="appearance-heading">Appearance</h2>
+      <label>Theme
+        <select name="theme">
+          <option value="original">Original</option>
+          <option value="green-blue">Green and blue</option>
+          <option value="custom">Custom colors</option>
+        </select>
+      </label>
+      <div id="custom-colors" hidden>
+        <label>Primary color <input name="accent" type="color" value="#17684e"></label>
+        <label>Secondary color <input name="secondary" type="color" value="#195b86"></label>
+      </div>
+      <div class="palette-preview" id="preview">Button preview</div>
+      <label>Homepage announcement <input name="announcement" maxlength="240" placeholder="Leave blank to hide"></label>
+    </section>
+
+    <button class="btn btn--solid" type="submit">Publish changes</button>
+  </form>
+
+  <section class="admin-panel" id="addons" hidden>
+    <h2>Paid add-ons</h2>
+    <dl>
+      <dt>Social media automation</dt><dd>Locked · Coming soon</dd>
+      <dt>Voice agents</dt><dd>Locked · Coming soon</dd>
+    </dl>
+  </section>
+</main>
+
+<template id="event-template">
+  <fieldset class="event-editor">
+    <legend>Event</legend>
+    <label>Title <input name="title" maxlength="120" required></label>
+    <div class="admin-columns">
+      <label>Date <input name="date" type="date" min="1900-01-01" max="9999-12-31" required></label>
+      <label>Location <input name="location" maxlength="140"></label>
+    </div>
+    <label>Details <textarea name="details" rows="3" maxlength="900"></textarea></label>
+    <label>Registration or replay URL <input name="url" type="url" pattern="https://.+" maxlength="500" placeholder="https://"></label>
+    <div class="admin-bar">
+      <label class="check-label"><input name="published" type="checkbox"> Show on site</label>
+      <button class="btn btn--line" type="button" data-remove>Remove</button>
+    </div>
+  </fieldset>
+</template>
+</body>
+</html>

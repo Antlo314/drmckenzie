@@ -11,6 +11,21 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   root.classList.remove('no-js');   // CSS only hides reveals once JS can show them
 
+  const application = document.querySelector('[data-coaching-application]');
+  if (application) {
+    application.hidden = false;
+    application.addEventListener('submit', event => {
+      event.preventDefault();
+      const fields = new FormData(application);
+      const body = [
+        `Name: ${fields.get('name')}`,
+        `Coaching package: ${fields.get('package')}`,
+        `Coaching goals: ${fields.get('goals')}`,
+      ].join('\r\n');
+      location.href = `mailto:KeepEverythingMoving@gmail.com?subject=KEM%20Coaching%20application&body=${encodeURIComponent(body)}`;
+    });
+  }
+
   // ------------------------------------------------ theme per section
   const themed = document.querySelectorAll('[data-theme-section]');
   const themeObs = new IntersectionObserver(entries => {

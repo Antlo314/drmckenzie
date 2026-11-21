@@ -124,9 +124,19 @@ void main(){
   const cur = clone(PAL[startName]);
   let target = PAL[startName];
   let snapped = false;
+  let customPalette;
+  window.__setGLPalette = (primary, secondary) => {
+    customPalette = [hex(primary), hex(secondary)];
+    window.__setGLTheme(document.documentElement.dataset.theme || startName);
+  };
   window.__setGLTheme = name => {
     if (!PAL[name]) return;
     target = PAL[name];
+    if (customPalette) {
+      const weight = name === 'night' ? .35 : .20;
+      const tint = color => target.base.map((base, i) => base * (1 - weight) + color[i] * weight);
+      target = { ...target, c1: tint(customPalette[0]), c2: tint(customPalette[1]) };
+    }
     // The first theme call happens before the visitor has scrolled anywhere,
     // so jump straight to it — lerping in from the default would land the
     // page on a colour that belongs to no section.

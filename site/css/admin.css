@@ -1,0 +1,26 @@
+.admin { width: min(100% - 32px, 820px); padding-block: 38px 72px; }
+.admin h1 { margin: 0; }
+.admin h2 { font-size: 1.4rem; }
+.admin-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.admin-panel {
+  display: grid; gap: 14px; padding: clamp(16px, 4vw, 28px); margin-block: 20px;
+  border: 1px solid var(--card-line); border-radius: 16px; background: var(--card);
+}
+.admin [hidden] { display: none !important; }
+.admin label { display: grid; gap: 5px; font-weight: 500; }
+.admin .check-label { display: flex; align-items: center; }
+.admin input, .admin select, .admin textarea {
+  color: var(--text); background: var(--bg); border: 1px solid var(--card-line);
+  border-radius: 6px; padding: 8px; font: inherit;
+}
+.admin input[type="color"] { width: 64px; height: 42px; padding: 3px; }
+.admin .btn { justify-self: start; }
+.admin button { cursor: pointer; }
+.admin button:disabled { opacity: .55; cursor: wait; }
+.admin-columns, #custom-colors { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); }
+.event-editor { display: grid; gap: 12px; border: 1px solid var(--card-line); border-radius: 10px; padding: 14px; margin-block: 12px; }
+.event-editor legend { padding-inline: 6px; }
+.palette-preview { padding: 8px 14px; width: fit-content; border-radius: 20px; color: white; font-weight: 500; }
+.admin dt { font-weight: 600; }
+.admin dd + dt { margin-top: 10px; }
+#status { min-height: 1.5em; margin-top: 14px; }

@@ -1,5 +1,8 @@
 {
   "outputDirectory": "site",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/about-5", "destination": "/mind-your-mind", "permanent": true }
+  ]
 }

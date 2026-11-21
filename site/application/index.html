@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Forms | Dr. Kemberly E. McKenzie</title>
-<meta name="description" content="Coaching application and retreat forms for KEM Coaching and the Mind Your Mind experience.">
+<meta name="description" content="Apply for KEM Coaching or request Dr. Kem for a speaking engagement.">
 <meta property="og:title" content="Forms — Dr. Kem">
-<meta property="og:description" content="Coaching application and retreat forms for KEM Coaching and the Mind Your Mind experience.">
+<meta property="og:description" content="Apply for KEM Coaching or request Dr. Kem for a speaking engagement.">
 <meta property="og:image" content="/assets/img/portrait-full.webp">
 <link rel="icon" href="/assets/logo/lockup.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +31,7 @@
     <a href="/about-1/">Books</a>
     <a href="/mind-your-mind/">Mind Your Mind</a>
     <a href="/plans-pricing/">Coaching</a>
+    <a href="/counseling/">Counseling</a>
     <a href="/shop/">Shop</a>
     <a href="/consulting/">Consulting</a>
     <a href="/missions/">Missions</a>
@@ -41,7 +42,7 @@
 </header>
 
 <div class="mobile-nav" hidden>
-  <a href="/">Home</a><a href="/about-1/">Books</a><a href="/mind-your-mind/">Mind Your Mind</a><a href="/plans-pricing/">Coaching</a><a href="/shop/">Shop</a><a href="/consulting/">Consulting</a><a href="/missions/">Missions</a><a href="/booking/">Booking</a>
+  <a href="/">Home</a><a href="/about-1/">Books</a><a href="/mind-your-mind/">Mind Your Mind</a><a href="/plans-pricing/">Coaching</a><a href="/counseling/">Counseling</a><a href="/shop/">Shop</a><a href="/consulting/">Consulting</a><a href="/missions/">Missions</a><a href="/booking/">Booking</a>
   <a class="btn btn--solid" href="/booking/">Book Dr. Kem</a>
 </div>
 
@@ -51,7 +52,7 @@
     <p class="crumb"><a href="/">Home</a> · Forms</p>
     <p class="kicker" data-reveal>FORMS</p>
     <h1 class="h-serif" data-reveal>Start your <em>application</em>.</h1>
-    <p class="lede" data-reveal>Applications for coaching and for the Mind Your Mind retreat are handled on the existing site so your submission reaches the office the same way it always has.</p>
+    <p class="lede" data-reveal>Tell Dr. Kem about your coaching goals or request a speaking engagement.</p>
   </div>
 </section>
 <section class="sec" data-theme-section="connect" style="padding-top:0">
@@ -61,16 +62,16 @@
         <span class="card-num">01</span>
         <h3>Coaching Application</h3>
         <p>Tell Dr. Kem about your goals and which package you're considering.</p>
-        <a class="btn btn--solid" href="https://www.kemberlymckenzie.com/application" target="_blank" rel="noopener">Open the Form</a>
+        <form class="application-form" data-coaching-application hidden>
+          <label>Name <input name="name" autocomplete="name" required></label>
+          <label>Coaching package <input name="package"></label>
+          <label>Coaching goals <textarea name="goals" rows="3" required></textarea></label>
+          <button class="btn btn--solid" type="submit">Open Email Draft</button>
+        </form>
+        <noscript><a class="btn btn--solid" href="mailto:KeepEverythingMoving@gmail.com?subject=KEM%20Coaching%20application">Email Your Application</a></noscript>
       </article>
       <article class="card" data-reveal>
         <span class="card-num">02</span>
-        <h3>Retreat Application</h3>
-        <p>Apply for the Mind Your Mind Dream Bigger Cape Town experience. A $250 deposit reserves your place.</p>
-        <a class="btn btn--line" href="https://www.kemberlymckenzie.com/application" target="_blank" rel="noopener">Open the Form</a>
-      </article>
-      <article class="card" data-reveal>
-        <span class="card-num">03</span>
         <h3>Speaking Request</h3>
         <p>Booking Dr. Kem for an event? Send the date, time, type of event and audience.</p>
         <a class="btn btn--line" href="/booking/">Booking Details</a>
@@ -78,7 +79,7 @@
     </div>
     <div class="rule"></div>
     <div class="handoff" data-reveal><span aria-hidden="true">✉</span>
-      <p><strong>Prefer email?</strong> Write to <a href="mailto:KeepEverythingMoving@gmail.com">KeepEverythingMoving@gmail.com</a> or call the office on <a href="tel:+16784698879">(678) 469-8879</a>.</p></div>
+      <p><strong>Prefer email?</strong> Write to <a href="mailto:KeepEverythingMoving@gmail.com">KeepEverythingMoving@gmail.com</a> or call the office on <a href="tel:+14709015555">(470) 901-5555</a>.</p></div>
   </div>
 </section>
 </main>
@@ -90,6 +91,7 @@
       <a href="/plans-pricing/">Plans &amp; Pricing</a>
       <a href="/booking/">Booking</a>
       <a href="/application/">Forms</a>
+      <a href="/events/">Events</a>
       <a href="/missions/">Donate</a>
       <a href="/shop/">Shop</a>
     </nav>
@@ -99,5 +101,6 @@
 
 <script src="/js/gl.js"></script>
 <script src="/js/main.js"></script>
+<script src="/js/site-content.js" defer></script>
 </body>
 </html>
