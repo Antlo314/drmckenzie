@@ -561,3 +561,11 @@ html:not(.no-js) [data-reveal].in { opacity: 1; transform: none; }
   html:not(.no-js) [data-reveal] { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
 }
+
+/* Final launch refinements */
+:root{--lg-mind2:linear-gradient(180deg,#241a2e 0%,#32134f 100%)}
+.lk-mind2{background-image:linear-gradient(180deg,#241a2e,#32134f)!important}
+.public-event{background:var(--card,#fff);border:1px solid var(--card-line,#ddd);border-radius:16px;padding:24px;margin:18px 0;max-width:720px}
+.public-event h3{font-family:var(--font-serif,serif);font-size:1.5rem}
+.public-event img{display:block;width:100%;height:auto;border-radius:10px;margin:12px 0}
+:root{--admin-primary:#32134f;--admin-accent:#10808f}
