@@ -2,7 +2,7 @@ const { createHash, createHmac, timingSafeEqual, randomUUID } = require('node:cr
 
 const contentKey = 'drkem:site-content:v1';
 const sessionName = '__Host-drkem_admin';
-const empty = { revision: null, theme: 'original', accent: '#17684e', secondary: '#195b86', announcement: '', events: [] };
+const empty = { revision: null, theme: 'green-blue', accent: '#17684e', secondary: '#195b86', announcement: '', events: [] };
 
 async function redis(...command) {
   const response = await fetch(process.env.UPSTASH_REDIS_REST_URL, {
