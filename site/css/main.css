@@ -541,6 +541,8 @@ html:not(.no-js) [data-reveal].in { opacity: 1; transform: none; }
   transition: border-color .25s, color .25s;
 }
 .prose a:hover { border-bottom-color: var(--accent); }
+.counseling-copy a.btn--solid { color: #fff; border-bottom-color: transparent; }
+.counseling-copy a.btn--ghost { color: var(--text); border-bottom-color: var(--card-line); }
 /* a bio column next to a portrait should start at the top, not float centred */
 .cols:has(.prose) { align-items: start; }
 .prose h3 {
