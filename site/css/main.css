@@ -154,7 +154,7 @@ body {
 .lockup--sign .lk-your  { top: 42.7%; height: 34.2%; }
 .lockup--sign .lk-mind2 { top: 41.2%; height: 34.4%; }
 .lockup--sign .lk-kem {
-  left: 41%; top: 74%; width: 44%; aspect-ratio: 1200/888;
+  left: 41%; top: 74%; width: 44%; aspect-ratio: 1200/1088;
   height: auto; transform: rotate(-4deg);
   filter: drop-shadow(0 6px 24px rgba(0,0,0,.55));
 }
@@ -163,7 +163,7 @@ body {
 .lockup--hero .lk-your { top: 38.3%; height: 30.7%; }
 .lockup--hero .lk-mind2 { top: 36.9%; height: 30.8%; }
 .lockup--hero .lk-kem {
-  left: 33%; top: 72%; width: 34%; transform: none;
+  left: 33%; top: 69%; width: 34%; transform: none;
   animation: sign-glow 5s ease-in-out infinite;
 }
 @keyframes sign-glow {

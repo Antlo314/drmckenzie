@@ -17,7 +17,7 @@ os.makedirs(IMG, exist_ok=True)
 
 # ---------------------------------------------------------------- script Kem
 src = np.array(Image.open(os.path.join(RAW, 'hero-kem19.png')).convert('RGB')).astype(np.float64)
-region = src[900:2350, 2900:4700]
+region = src[550:2350, 2900:4700]
 minc = region.min(axis=2)
 t = np.clip((minc - 150.0) / (250.0 - 150.0), 0.0, 1.0)   # whiteness coverage
 # zero the page-background band below the banner: contiguous near-pure-white
@@ -35,9 +35,8 @@ big = np.zeros_like(solid)
 for k in np.where(sizes >= 2500)[0] + 1:
     sel = lab == k
     cy, cx = ndimage.center_of_mass(sel)
-    if cy < 140 and cx > 950:        # "Dr." / COACHING WITH remnants, top-right
-        continue
-    big |= sel
+    if sizes[k - 1] > 100000 and cy < 1600:
+        big |= sel
 keepzone = ndimage.binary_dilation(big, iterations=15)      # keep brush distress specks
 alpha[~keepzone] = 0.0
 ys, xs = np.where(alpha > 0.02)
