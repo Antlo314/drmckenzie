@@ -36,7 +36,7 @@
   --shadow-lift: 0 30px 64px -26px rgba(22,18,28,.38);
   --lg-mind: linear-gradient(115deg, #1a9d86, #0f6f7c);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #241a2e, #4a2a58);
+  --lg-mind2: linear-gradient(115deg, #8a6aa3, #b195c6);
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 
   --font-serif: "Bodoni Moda", "Didot", serif;
@@ -49,8 +49,8 @@ html[data-theme="coaching"] {
   --bg: #f6f2f5; --accent: #9c2aab; --accent-2: #10808f; --hot: #a8792c;
   --lg-mind: linear-gradient(115deg, #a8329e, #6d1d7e);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #241a2e, #46284f);
-  --lg-kem: linear-gradient(115deg, #10808f, #17a3ab);
+  --lg-mind2: linear-gradient(115deg, #9a6fae, #c19ad0);
+  --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 }
 html[data-theme="mym"] {
   --bg: #eef4ec; --text: #10231a; --muted: #55705f;
@@ -58,7 +58,7 @@ html[data-theme="mym"] {
   --card-line: rgba(16,35,26,.12);
   --lg-mind: linear-gradient(115deg, #1a9d5c, #0e7048);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #10231a, #1d4635);
+  --lg-mind2: linear-gradient(115deg, #5e9a7c, #8fc2a6);
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 }
 /* Night Vision keeps a deep band on purpose — the section is about seeing in
@@ -72,13 +72,13 @@ html[data-theme="night"] {
   --lg-mind: linear-gradient(115deg, #cfe6f2, #7cc0e8);
   --lg-your: linear-gradient(180deg, #d8a54a, #b8862f);
   --lg-mind2: linear-gradient(115deg, #ffffff, #b8d6ea);
-  --lg-kem: linear-gradient(115deg, #cfe6f2, #ffffff);
+  --lg-kem: linear-gradient(115deg, #d8a54a, #f0c674);
 }
 html[data-theme="shop"] {
   --bg: #f1f3ee; --accent: #2c7a56; --accent-2: #14543f; --hot: #a8792c;
   --lg-mind: linear-gradient(115deg, #2c8a5e, #16603f);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #16211a, #2c4033);
+  --lg-mind2: linear-gradient(115deg, #6f9a82, #9fc2ad);
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 }
 html[data-theme="missions"] {
@@ -86,15 +86,15 @@ html[data-theme="missions"] {
   --accent: #b4622a; --accent-2: #b2426b; --hot: #a8792c;
   --card-line: rgba(36,23,16,.12);
   --lg-mind: linear-gradient(115deg, #c46b2c, #96481c);
-  --lg-your: linear-gradient(180deg, #b2426b, #8d2f52);
-  --lg-mind2: linear-gradient(115deg, #241710, #4a2f20);
-  --lg-kem: linear-gradient(115deg, #b2426b, #d0688d);
+  --lg-your: linear-gradient(180deg, #b8862f, #96661f);
+  --lg-mind2: linear-gradient(115deg, #b08a72, #d3b29a);
+  --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 }
 html[data-theme="connect"] {
   --bg: #f3f0f6; --accent: #7d1f8e; --accent-2: #10808f; --hot: #a8792c;
   --lg-mind: linear-gradient(115deg, #10808f, #0d5f74);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #241a2e, #4a2a58);
+  --lg-mind2: linear-gradient(115deg, #8a6aa3, #b195c6);
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 }
 
@@ -304,12 +304,8 @@ html:not(.no-js) [data-reveal].in { opacity: 1; transform: none; }
     52% 94.25%, 49% 94.47%, 42% 94.47%, 39.7% 94.3%, 39.4% 100%, 0 100%
   );
 }
-.hero-photo::before {
-  content: ""; position: absolute; inset: 9% 6% 5%; border-radius: 48% 48% 18px 18px / 36% 36% 18px 18px;
-  border: 1px solid color-mix(in srgb, var(--accent-2) 22%, transparent);
-  background: linear-gradient(155deg, color-mix(in srgb, var(--accent-2) 8%, var(--card)), transparent 90%);
-  z-index: -1;
-}
+/* The arch frame that sat behind the full-length portrait was removed at
+   Dr. Kem's request (Nov 22): it cropped across her instead of framing her. */
 
 /* ---------------------------------------------------------- about */
 .about-photo { position: relative; margin: 0; }
@@ -583,9 +579,22 @@ html:not(.no-js) [data-reveal].in { opacity: 1; transform: none; }
 .handoff strong { color: var(--text); }
 
 /* ---------------------------------------------------------- responsive */
-@media (max-width: 1300px) {
-  .nav, .head-cta { display: none; }
-  .menu-btn { display: block; }
+/* Keep the page links in the header on laptop widths; the name drops out
+   first to make room. The "Book Dr. Kem" button stays visible at every size. */
+@media (max-width: 1360px) {
+  .brand-name { display: none; }
+  .nav { gap: clamp(8px, .9vw, 14px); }
+  .nav a { font-size: 12.5px; letter-spacing: .05em; }
+}
+@media (max-width: 1080px) {
+  .nav { display: none; }
+  .menu-btn { display: block; margin-left: 0; }
+  .head-cta { margin-left: auto; }
+  .brand-name { display: inline; }
+}
+@media (max-width: 560px) {
+  .brand-name { display: none; }
+  .head-cta { padding: 9px 14px; font-size: 11px; letter-spacing: .06em; }
 }
 @media (max-width: 960px) {
   .hero-inner, .cols, .cols--rev, .night-cols { grid-template-columns: 1fr; }
@@ -621,12 +630,12 @@ html:not(.no-js) [data-reveal].in { opacity: 1; transform: none; }
 }
 
 /* Published site appearance */
+/* The published palette recolors buttons and accents only. The wordmark keeps
+   its per-section colors so it still shifts as you scroll, with "Your" and
+   "Kem" staying gold (Dr. Kem's request, Nov 22). */
 html[data-site-palette] {
   --accent: color-mix(in srgb, var(--site-primary) 45%, black);
   --accent-2: color-mix(in srgb, var(--site-secondary) 45%, black);
-  --lg-mind: linear-gradient(115deg, var(--accent), var(--accent-2));
-  --lg-your: var(--lg-mind);
-  --lg-kem: var(--lg-mind);
 }
 html[data-site-palette][data-theme="night"] {
   --accent: color-mix(in srgb, var(--site-primary) 30%, white);
@@ -640,4 +649,6 @@ html[data-site-palette] .btn--solid {
   background: var(--card); border: 1px solid var(--card-line);
 }
 .event-group { margin-bottom: 32px; }
+.consulting-logo { margin: 30px 0 0; max-width: 420px; }
+.consulting-logo img { display: block; width: 100%; height: auto; border-radius: 18px; box-shadow: var(--shadow); }
 .event-description { white-space: pre-line; }

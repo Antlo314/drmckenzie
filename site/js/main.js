@@ -123,7 +123,7 @@
       btn.focus();
     }
   });
-  matchMedia('(min-width: 1301px)').addEventListener('change', e => {
+  matchMedia('(min-width: 1081px)').addEventListener('change', e => {
     if (e.matches) setMenuOpen(false);
   });
 
