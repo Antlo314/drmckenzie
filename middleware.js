@@ -11,7 +11,7 @@
  * Never gated: /api (admin backend), /admin, and static assets.
  * To take the site live, set MAINTENANCE to false (or delete this file).
  */
-const MAINTENANCE = true;
+const MAINTENANCE = false;
 const COOKIE = 'drkem_preview';
 
 export const config = {
