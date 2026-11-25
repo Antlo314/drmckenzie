@@ -14,6 +14,8 @@
   const application = document.querySelector('[data-coaching-application]');
   if (application) {
     application.hidden = false;
+    const chosen = new URLSearchParams(location.search).get('package');
+    if (chosen) application.elements.package.value = chosen.slice(0, 80);
     application.addEventListener('submit', event => {
       event.preventDefault();
       const fields = new FormData(application);
