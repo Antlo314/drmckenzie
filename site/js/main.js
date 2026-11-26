@@ -24,7 +24,7 @@
         `Coaching package: ${fields.get('package')}`,
         `Coaching goals: ${fields.get('goals')}`,
       ].join('\r\n');
-      location.href = `mailto:KeepEverythingMoving@gmail.com?subject=KEM%20Coaching%20application&body=${encodeURIComponent(body)}`;
+      location.href = `mailto:${window.__drkemEmail || 'info@kemberlymckenzie.com'}?subject=KEM%20Coaching%20application&body=${encodeURIComponent(body)}`;
     });
   }
 

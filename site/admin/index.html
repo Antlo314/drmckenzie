@@ -5,52 +5,118 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Site Admin | Dr. Kem</title>
+<link rel="icon" href="/assets/logo/lockup.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Outfit:wght@200..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/admin.css">
 <script defer src="/js/admin.js"></script>
 </head>
 <body>
 <main class="wrap admin">
-  <header class="admin-bar">
+  <header class="admin-bar admin-top">
     <div><p class="kicker">DR. KEM</p><h1 class="h-serif">Site admin</h1></div>
-    <div><a href="/">View site</a> <button type="button" class="btn btn--line" id="logout" hidden>Sign out</button></div>
+    <div class="admin-top-actions"><a href="/" target="_blank" rel="noopener">View site ↗</a> <button type="button" class="btn btn--line" id="logout" hidden>Sign out</button></div>
   </header>
 
   <p id="status" role="status"></p>
-  <form class="admin-panel" id="login" hidden>
+
+  <form class="admin-panel admin-login" id="login" hidden>
     <h2>Sign in</h2>
     <label>Admin password <input name="password" type="password" autocomplete="current-password" required></label>
     <button class="btn btn--solid" type="submit">Sign in</button>
   </form>
 
-  <form id="editor" hidden>
-    <section class="admin-panel" aria-labelledby="events-heading">
+  <form id="editor" hidden novalidate>
+    <nav class="admin-nav" aria-label="Admin sections">
+      <a href="#events-panel">Events</a>
+      <a href="#announcement-panel">Announcement &amp; colors</a>
+      <a href="#contact-panel">Contact &amp; social</a>
+      <a href="#links-panel">Booking &amp; payment</a>
+      <a href="#photos-panel">Photos</a>
+      <a href="#shop-panel">Shop</a>
+    </nav>
+
+    <section class="admin-panel" id="events-panel" aria-labelledby="events-heading">
       <div class="admin-bar">
         <h2 id="events-heading">Events</h2>
-        <button class="btn btn--line" type="button" id="add-event">Add event</button>
+        <button class="btn btn--line" type="button" id="add-event">+ Add event</button>
       </div>
-      <p>Check “Show on site” for events you want visitors to see. Unchecked events stay in the admin area.</p>
+      <p class="admin-help">Events show on the Events page, and the next three upcoming ones also show on the homepage. Past events move to “Past events” on their own. Uncheck “Show on site” to keep an event as a draft.</p>
       <div id="event-list"></div>
+      <p class="admin-empty" id="no-events">No events yet. Click “+ Add event” to create one.</p>
     </section>
 
-    <section class="admin-panel" aria-labelledby="appearance-heading">
-      <h2 id="appearance-heading">Appearance</h2>
-      <label>Theme
+    <section class="admin-panel" id="announcement-panel" aria-labelledby="appearance-heading">
+      <h2 id="appearance-heading">Announcement &amp; colors</h2>
+      <label>Homepage announcement
+        <input name="announcement" maxlength="240" placeholder="Leave blank to hide">
+        <small>A short message at the top of the homepage, for example “Women's retreat: Dec 4–6. Register now!”</small>
+      </label>
+      <label>Site colors
         <select name="theme">
-          <option value="original">Original</option>
+          <option value="original">Original (purple and teal)</option>
           <option value="green-blue">Green and blue</option>
           <option value="custom">Custom colors</option>
         </select>
       </label>
-      <div id="custom-colors" hidden>
+      <div id="custom-colors" class="admin-columns" hidden>
         <label>Primary color <input name="accent" type="color" value="#17684e"></label>
         <label>Secondary color <input name="secondary" type="color" value="#195b86"></label>
       </div>
       <div class="palette-preview" id="preview">Button preview</div>
-      <label>Homepage announcement <input name="announcement" maxlength="240" placeholder="Leave blank to hide"></label>
     </section>
 
-    <button class="btn btn--solid" type="submit">Publish changes</button>
+    <section class="admin-panel" id="contact-panel" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Contact &amp; social</h2>
+      <p class="admin-help">Leave a box blank to keep what the site shows now (shown in grey).</p>
+      <div class="admin-columns">
+        <label>Email for all email buttons <input name="contact.email" type="email" maxlength="120" placeholder="info@kemberlymckenzie.com"></label>
+        <label>Office phone <input name="contact.phone" type="tel" maxlength="25" placeholder="(470) 901-5555"></label>
+      </div>
+      <div class="admin-columns">
+        <label>Instagram <input name="social.instagram" type="url" maxlength="300" placeholder="https://www.instagram.com/itsdrkem/"></label>
+        <label>Facebook <input name="social.facebook" type="url" maxlength="300" placeholder="https://www.facebook.com/KemberlyMcKenzie"></label>
+        <label>TikTok <input name="social.tiktok" type="url" maxlength="300" placeholder="https://www.tiktok.com/@itsdrkem"></label>
+        <label>LinkedIn <input name="social.linkedin" type="url" maxlength="300" placeholder="https://www.linkedin.com/in/kemberly-mckenzie-1103897/"></label>
+      </div>
+    </section>
+
+    <section class="admin-panel" id="links-panel" aria-labelledby="links-heading">
+      <h2 id="links-heading">Booking &amp; payment links</h2>
+      <p class="admin-help">Paste a full link that starts with https://. Leave blank to keep the current link (shown in grey).</p>
+      <label>Counseling: “Schedule a Consultation” buttons
+        <input name="links.consult" type="url" maxlength="500" placeholder="https://www.therapyportal.com/p/mindfuldts/appointments/availability/">
+        <small>To have requests go straight to your Google Calendar, create an appointment booking page in Google Calendar and paste its link here.</small>
+      </label>
+      <label>Coaching: “Book a free consultation” buttons
+        <input name="links.coachingCall" type="url" maxlength="500" placeholder="https://calendly.com/kemcoaching/coaching-phone-consult">
+      </label>
+      <label>Shop: PayPal checkout link for products
+        <input name="links.paypal" type="url" maxlength="500" placeholder="https://www.paypal.com/ncp/payment/H49C57ALUWCBC">
+      </label>
+      <label>Missions: “Donate with PayPal” button
+        <input name="links.donate" type="url" maxlength="500" placeholder="https://www.paypal.com/ncp/payment/H49C57ALUWCBC">
+      </label>
+    </section>
+
+    <section class="admin-panel" id="photos-panel" aria-labelledby="photos-heading">
+      <h2 id="photos-heading">Photos</h2>
+      <p class="admin-help">Replace a photo on the site. Portrait (tall) photos work best. Large photos are resized for you.</p>
+      <div class="photo-grid" id="photo-list"></div>
+    </section>
+
+    <section class="admin-panel" id="shop-panel" aria-labelledby="shop-heading">
+      <h2 id="shop-heading">Shop</h2>
+      <p class="admin-help">Change a price, mark an item sold out, or hide it from the Shop page. Leave the price blank to keep the price shown in grey.</p>
+      <div id="product-list" class="product-admin-list"></div>
+    </section>
+
+    <div class="publish-bar">
+      <span id="dirty-note" hidden>You have unpublished changes.</span>
+      <button class="btn btn--solid" type="submit">Publish changes</button>
+    </div>
   </form>
 
   <section class="admin-panel" id="addons" hidden>
@@ -65,16 +131,27 @@
 <template id="event-template">
   <fieldset class="event-editor">
     <legend>Event</legend>
-    <label>Title <input name="title" maxlength="120" required></label>
-    <div class="admin-columns">
-      <label>Date <input name="date" type="date" min="1900-01-01" max="9999-12-31" required></label>
-      <label>Location <input name="location" maxlength="140"></label>
+    <div class="event-editor-body">
+      <div class="image-field" data-image-field>
+        <img alt="" data-preview hidden>
+        <span class="image-placeholder" data-placeholder>No photo</span>
+        <label class="btn btn--line file-button">Add photo<input type="file" accept="image/*" data-file hidden></label>
+        <button type="button" class="link-button" data-clear-image hidden>Remove photo</button>
+      </div>
+      <div class="event-fields">
+        <label>Title <input data-field="title" maxlength="120" required></label>
+        <div class="admin-columns">
+          <label>Date <input data-field="date" type="date" min="1900-01-01" max="9999-12-31" required></label>
+          <label>Time <input data-field="time" maxlength="40" placeholder="7:00 PM"></label>
+        </div>
+        <label>Location <input data-field="location" maxlength="140" placeholder="Atlanta, GA or Online"></label>
+        <label>Details <textarea data-field="details" rows="3" maxlength="900"></textarea></label>
+        <label>Registration or replay link <input data-field="url" type="url" maxlength="500" placeholder="https://"></label>
+      </div>
     </div>
-    <label>Details <textarea name="details" rows="3" maxlength="900"></textarea></label>
-    <label>Registration or replay URL <input name="url" type="url" pattern="https://.+" maxlength="500" placeholder="https://"></label>
     <div class="admin-bar">
-      <label class="check-label"><input name="published" type="checkbox"> Show on site</label>
-      <button class="btn btn--line" type="button" data-remove>Remove</button>
+      <label class="check-label"><input data-field="published" type="checkbox"> Show on site</label>
+      <button class="btn btn--line" type="button" data-remove>Delete event</button>
     </div>
   </fieldset>
 </template>

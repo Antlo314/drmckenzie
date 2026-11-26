@@ -1,39 +1,59 @@
-const { createHash, createHmac, timingSafeEqual, randomUUID } = require('node:crypto');
+const { randomUUID } = require('node:crypto');
+const { redis, equal, signature, signedIn, sessionCookie, storageConfigured, adminConfigured } = require('./_lib/store');
 
 const contentKey = 'drkem:site-content:v1';
-const sessionName = '__Host-drkem_admin';
-const empty = { revision: null, theme: 'green-blue', accent: '#17684e', secondary: '#195b86', announcement: '', events: [] };
+const imagesKey = 'drkem:images';            // hash: image id -> upload time (ms)
+const imageKey = id => 'drkem:img:' + id;
 
-async function redis(...command) {
-  const response = await fetch(process.env.UPSTASH_REDIS_REST_URL, {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + process.env.UPSTASH_REDIS_REST_TOKEN,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(command),
-    signal: AbortSignal.timeout(5000),
-  });
-  const data = await response.json();
-  if (!response.ok || data.error) throw new Error('Storage unavailable');
-  return data.result;
+// Editable photo slots. Each matches an <img data-photo="..."> on the site.
+const photoSlots = ['home-about', 'home-mym', 'home-night', 'counseling', 'booking'];
+const linkKeys = ['consult', 'coachingCall', 'paypal', 'donate'];
+const socialKeys = ['instagram', 'facebook', 'tiktok', 'linkedin'];
+const imageTypes = { 'image/webp': 'RIFF', 'image/jpeg': '\xff\xd8\xff', 'image/png': '\x89PNG' };
+const maxImageBytes = 1_500_000;
+
+// Blank strings mean "keep what the page already shows".
+function blank() {
+  return {
+    revision: null, theme: 'green-blue', accent: '#17684e', secondary: '#195b86', announcement: '',
+    events: [],
+    contact: { email: '', phone: '' },
+    social: Object.fromEntries(socialKeys.map(key => [key, ''])),
+    links: Object.fromEntries(linkKeys.map(key => [key, ''])),
+    photos: {},
+    products: {},
+  };
 }
 
-function equal(a, b) {
-  const hash = value => createHash('sha256').update(value).digest();
-  return timingSafeEqual(hash(a), hash(b));
+// Older saved content predates some sections; fill them in.
+function normalize(stored) {
+  const base = blank();
+  if (!stored) return base;
+  return {
+    ...base, ...stored,
+    events: (stored.events || []).map(event => ({ time: '', image: '', ...event })),
+    contact: { ...base.contact, ...stored.contact },
+    social: { ...base.social, ...stored.social },
+    links: { ...base.links, ...stored.links },
+    photos: { ...stored.photos },
+    products: { ...stored.products },
+  };
 }
 
-function signature(expiry) {
-  return createHmac('sha256', process.env.DRKEM_SESSION_SECRET)
-    .update(sessionName + ':' + expiry + ':' + process.env.DRKEM_ADMIN_PASSWORD).digest('hex');
-}
+const uuid = value => typeof value === 'string' && /^[a-f0-9-]{36}$/.test(value);
+const string = (value, length) => typeof value === 'string' && value.length <= length;
+const color = value => string(value, 7) && /^#[a-f\d]{6}$/i.test(value);
+const plainObject = value => !!value && typeof value === 'object' && !Array.isArray(value);
 
-function signedIn(req) {
-  if (!process.env.DRKEM_SESSION_SECRET || !process.env.DRKEM_ADMIN_PASSWORD) return false;
-  const cookie = (req.headers.cookie || '').split(/;\s*/).find(value => value.startsWith(sessionName + '='));
-  const [expiry, mac] = cookie?.slice(sessionName.length + 1).split('.') || [];
-  return /^\d{13}$/.test(expiry) && Number(expiry) > Date.now() && !!mac && equal(signature(expiry), mac);
+function httpsUrl(value, length = 500) {
+  if (!string(value, length)) return false;
+  if (!value) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password;
+  } catch {
+    return false;
+  }
 }
 
 function date(value) {
@@ -43,46 +63,107 @@ function date(value) {
 }
 
 function validate(content) {
-  const string = (value, length) => typeof value === 'string' && value.length <= length;
-  const color = value => string(value, 7) && /^#[a-f\d]{6}$/i.test(value);
-  if (!content || !['original', 'green-blue', 'custom'].includes(content.theme) ||
-      !color(content.accent) || !color(content.secondary) || !string(content.announcement, 240) ||
-      !Array.isArray(content.events) || content.events.length > 50) return false;
+  if (!plainObject(content) || !['original', 'green-blue', 'custom'].includes(content.theme) ||
+      !color(content.accent) || !color(content.secondary) || !string(content.announcement, 240)) {
+    return 'Check the colors and announcement.';
+  }
 
+  if (!Array.isArray(content.events) || content.events.length > 50) return 'Too many events (50 at most).';
   const ids = new Set();
-  return content.events.every(event => {
-    if (!event || !string(event.id, 36) || !/^[a-f0-9-]{36}$/.test(event.id) || ids.has(event.id) ||
-        !string(event.title, 120) || !event.title.trim() || !date(event.date) ||
-        !string(event.details, 900) || !string(event.location, 140) ||
-        typeof event.published !== 'boolean' || !string(event.url, 500)) return false;
+  for (const event of content.events) {
+    const name = event?.title ? `“${String(event.title).slice(0, 40)}”` : 'an event';
+    if (!plainObject(event) || !uuid(event.id) || ids.has(event.id)) return 'An event could not be read. Reload and try again.';
+    if (!string(event.title, 120) || !event.title.trim()) return 'Every event needs a title.';
+    if (!date(event.date)) return `Add a date for ${name}.`;
+    if (!string(event.time, 40) || !string(event.details, 900) || !string(event.location, 140)) return `Shorten the details for ${name}.`;
+    if (typeof event.published !== 'boolean') return `Check “Show on site” for ${name}.`;
+    if (!httpsUrl(event.url)) return `The link for ${name} must start with https://`;
+    if (event.image !== '' && !uuid(event.image)) return `Re-upload the photo for ${name}.`;
     ids.add(event.id);
-    if (!event.url) return true;
-    try {
-      const url = new URL(event.url);
-      return url.protocol === 'https:' && !url.username && !url.password;
-    } catch {
-      return false;
+  }
+
+  const { contact, social, links, photos, products } = content;
+  if (!plainObject(contact) || !string(contact.email, 120) ||
+      (contact.email && !/^[^\s@<>"]+@[^\s@<>"]+\.[a-z]{2,}$/i.test(contact.email))) return 'Check the email address.';
+  if (!string(contact.phone, 25) || (contact.phone && !/^[\d\s()+.-]{7,25}$/.test(contact.phone))) return 'Check the phone number.';
+  if (!plainObject(social) || !socialKeys.every(key => httpsUrl(social[key], 300))) return 'Social links must start with https://';
+  if (!plainObject(links) || !linkKeys.every(key => httpsUrl(links[key]))) return 'Booking and payment links must start with https://';
+  if (!plainObject(photos) || !Object.entries(photos).every(([slot, id]) => photoSlots.includes(slot) && uuid(id))) {
+    return 'Re-upload the page photos.';
+  }
+  if (!plainObject(products) || Object.keys(products).length > 100) return 'Check the shop settings.';
+  for (const [id, product] of Object.entries(products)) {
+    if (!/^[a-z0-9-]{1,60}$/.test(id) || !plainObject(product) ||
+        typeof product.hidden !== 'boolean' || typeof product.soldOut !== 'boolean' ||
+        !string(product.price, 12) || (product.price && !/^\$?\d{1,5}(\.\d{2})?$/.test(product.price))) {
+      return 'Shop prices should look like $25.00.';
     }
-  });
+  }
+  return '';
+}
+
+// Keep only known fields, so nothing unexpected is ever stored or served.
+function clean(content) {
+  const pick = (source, keys) => Object.fromEntries(keys.map(key => [key, source[key].trim()]));
+  return {
+    theme: content.theme, accent: content.accent, secondary: content.secondary,
+    announcement: content.announcement.trim(),
+    events: content.events.map(({ id, title, date, time, location, details, url, image, published }) =>
+      ({ id, title: title.trim(), date, time: time.trim(), location: location.trim(), details: details.trim(), url: url.trim(), image, published })),
+    contact: pick(content.contact, ['email', 'phone']),
+    social: pick(content.social, socialKeys),
+    links: pick(content.links, linkKeys),
+    photos: { ...content.photos },
+    products: Object.fromEntries(Object.entries(content.products)
+      .map(([id, { price, hidden, soldOut }]) => [id, { price: price.trim(), hidden, soldOut }])
+      .filter(([, product]) => product.price || product.hidden || product.soldOut)),
+  };
 }
 
 async function readContent() {
-  return JSON.parse(await redis('GET', contentKey) ?? 'null') ?? empty;
+  return normalize(JSON.parse(await redis('GET', contentKey) ?? 'null'));
+}
+
+// Delete uploaded photos that nothing uses any more. Uploads stay for a day
+// first, so a photo added in an editor that has not been published yet survives.
+async function pruneImages(content) {
+  const used = new Set([...content.events.map(event => event.image), ...Object.values(content.photos)]);
+  const entries = await redis('HGETALL', imagesKey) || [];
+  const stale = [];
+  for (let i = 0; i < entries.length; i += 2) {
+    if (!used.has(entries[i]) && Date.now() - Number(entries[i + 1]) > 86_400_000) stale.push(entries[i]);
+  }
+  if (!stale.length) return;
+  await redis('DEL', ...stale.map(imageKey));
+  await redis('HDEL', imagesKey, ...stale);
+}
+
+async function upload(body) {
+  const { type, data } = body;
+  if (!(type in imageTypes) || typeof data !== 'string' || data.length > maxImageBytes * 1.4 ||
+      !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) return null;
+  const bytes = Buffer.from(data, 'base64');
+  if (bytes.length > maxImageBytes || !bytes.toString('latin1', 0, imageTypes[type].length).startsWith(imageTypes[type])) return null;
+  const id = randomUUID();
+  await redis('SET', imageKey(id), JSON.stringify({ type, data }));
+  await redis('HSET', imagesKey, id, String(Date.now()));
+  return id;
 }
 
 module.exports = async (req, res) => {
-  res.setHeader('Cache-Control', 'no-store');
   const admin = req.query?.admin === '1';
   const reply = (status, value) => res.status(status).json(value);
-  const configured = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN;
+  res.setHeader('Cache-Control', 'no-store');
   try {
     if (req.method === 'GET') {
       if (admin && !signedIn(req)) return reply(401, { error: 'Sign in to continue.' });
-      if (admin && !configured) return reply(503, { error: 'Site storage needs to be configured.' });
-      const content = configured ? await readContent() : empty;
+      if (admin && !storageConfigured()) return reply(503, { error: 'Site storage needs to be configured.' });
+      const content = storageConfigured() ? await readContent() : blank();
       if (admin) return reply(200, content);
-      const { theme, accent, secondary, announcement, events } = content;
-      return reply(200, { theme, accent, secondary, announcement, events: events.filter(event => event.published) });
+      // Visitors get a copy the CDN may keep for a few seconds.
+      res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=15, stale-while-revalidate=60');
+      const { revision, events, ...rest } = content;
+      return reply(200, { ...rest, events: events.filter(event => event.published) });
     }
 
     if (req.method !== 'POST') {
@@ -90,19 +171,17 @@ module.exports = async (req, res) => {
       return reply(405, { error: 'Method unavailable.' });
     }
     // Browser requests from other origins cannot send this header without a CORS preflight.
-    if (req.headers['x-drkem-admin'] !== '1' || typeof req.body !== 'object' || !req.body) {
+    if (req.headers['x-drkem-admin'] !== '1' || !plainObject(req.body)) {
       return reply(403, { error: 'Invalid admin request.' });
     }
-    const cookie = value => res.setHeader('Set-Cookie', sessionName + '=' + value + '; Path=/; HttpOnly; Secure; SameSite=Strict');
     if (req.body.action === 'logout') {
-      cookie('; Max-Age=0');
+      res.setHeader('Set-Cookie', sessionCookie('; Max-Age=0'));
       return reply(200, {});
     }
-    if (!configured || !process.env.DRKEM_ADMIN_PASSWORD || !process.env.DRKEM_SESSION_SECRET) {
-      return reply(503, { error: 'Admin sign-in and storage need to be configured.' });
-    }
+    if (!adminConfigured()) return reply(503, { error: 'Admin sign-in and storage need to be configured.' });
+
     if (req.body.action === 'login') {
-      const ip = String(req.headers['x-real-ip'] || req.socket.remoteAddress || '').slice(0, 80);
+      const ip = String(req.headers['x-real-ip'] || req.socket?.remoteAddress || '').slice(0, 80);
       const attempts = await redis('EVAL',
         "local n=redis.call('INCR',KEYS[1]); if n==1 then redis.call('EXPIRE',KEYS[1],60) end; return n",
         1, 'drkem:signin:' + ip);
@@ -112,20 +191,26 @@ module.exports = async (req, res) => {
         return reply(401, { error: 'Incorrect password.' });
       }
       const expiry = Date.now() + 8 * 60 * 60 * 1000;
-      cookie(expiry + '.' + signature(expiry) + '; Max-Age=28800');
+      res.setHeader('Set-Cookie', sessionCookie(expiry + '.' + signature(expiry) + '; Max-Age=28800'));
       return reply(200, {});
     }
+
     if (!signedIn(req)) return reply(401, { error: 'Your session expired. Sign in again.' });
-    if (req.body.action !== 'save' || !validate(req.body.content)) {
-      return reply(400, { error: 'Check the event details, colors, and HTTPS links.' });
+
+    if (req.body.action === 'upload') {
+      const id = await upload(req.body);
+      if (!id) return reply(400, { error: 'That photo could not be used. Try a JPG or PNG under 10 MB.' });
+      return reply(200, { id, url: '/api/image?id=' + id });
     }
-    const { revision, theme, accent, secondary, announcement, events } = req.body.content;
-    if (revision !== null && (typeof revision !== 'string' || !/^[a-f0-9-]{36}$/.test(revision))) {
-      return reply(400, { error: 'Invalid revision.' });
-    }
-    const records = events.map(({ id, title, date, details, location, url, published }) =>
-      ({ id, title, date, details, location, url, published }));
-    const updated = { revision: randomUUID(), theme, accent, secondary, announcement: announcement.trim(), events: records };
+
+    if (req.body.action !== 'save') return reply(400, { error: 'Unknown request.' });
+    const content = normalize(req.body.content);
+    const problem = validate(content);
+    if (problem) return reply(400, { error: problem });
+    const { revision } = req.body.content;
+    if (revision !== null && !uuid(revision)) return reply(400, { error: 'Invalid revision.' });
+
+    const updated = { revision: randomUUID(), ...clean(content) };
     const saved = await redis('EVAL', `
       local current = redis.call('GET', KEYS[1])
       local revision = current and cjson.decode(current).revision or ''
@@ -134,7 +219,8 @@ module.exports = async (req, res) => {
       return 1
     `, 1, contentKey, revision ?? '', JSON.stringify(updated));
     if (!saved) return reply(409, { error: 'Someone published a newer version. Copy any unsaved work, then reload.' });
-    return reply(200, updated);
+    await pruneImages(updated).catch(() => {});
+    return reply(200, normalize(updated));
   } catch {
     return reply(503, { error: 'Site content is temporarily unavailable. Try again shortly.' });
   }

@@ -1,0 +1,110 @@
+[
+ {
+  "id": "night-vision-how-to-see-your-way-though-any-situ",
+  "name": "Night Vision: How to see your way though any situation",
+  "price": "$16.99",
+  "image": "/assets/img/shop/cover-48b53aeef21c.webp"
+ },
+ {
+  "id": "night-vision-the-journal",
+  "name": "NIGHT VISION- THE JOURNAL",
+  "price": "$14.99",
+  "image": "/assets/img/shop/cover-16372dddf800.webp"
+ },
+ {
+  "id": "night-vision-book-amp-journal",
+  "name": "NIGHT VISION Book & Journal",
+  "price": "$25.99",
+  "image": "/assets/img/shop/cover-16372dddf800.webp"
+ },
+ {
+  "id": "k-e-m-book",
+  "name": "K.E.M. Book",
+  "price": "$20.00",
+  "image": "/assets/img/shop/cover-68f48d63a19c.webp"
+ },
+ {
+  "id": "k-e-m-study-guide-journal",
+  "name": "K.E.M. Study Guide Journal",
+  "price": "$15.00",
+  "image": "/assets/img/shop/cover-758433238c51.webp"
+ },
+ {
+  "id": "k-e-m-book-amp-journal",
+  "name": "K.E.M. Book & Journal",
+  "price": "$30.00",
+  "image": "/assets/img/shop/cover-68f48d63a19c.webp"
+ },
+ {
+  "id": "mind-your-manuscript-a-writing-guide-for-emergin",
+  "name": "Mind Your Manuscript: A Writing Guide for Emerging Authors",
+  "price": "$25.99",
+  "image": "/assets/img/shop/cover-3656cef11acc.webp"
+ },
+ {
+  "id": "mind-your-mindtee",
+  "name": "Mind Your MindTee",
+  "price": "$25.00",
+  "image": "/assets/img/shop/cut-19a5ab5bb557.webp"
+ },
+ {
+  "id": "kem-tee-black",
+  "name": "KEM Tee (Black)",
+  "price": "$25.00",
+  "image": "/assets/img/shop/cut-9f68d467d8bf.webp"
+ },
+ {
+  "id": "kem-tee-white",
+  "name": "KEM Tee (White)",
+  "price": "$25.00",
+  "image": "/assets/img/shop/cut-4a731db30e21.webp"
+ },
+ {
+  "id": "thankful-tee",
+  "name": "Thankful Tee",
+  "price": "$25.00",
+  "image": "/assets/img/shop/cut-9989d6ed755f.webp"
+ },
+ {
+  "id": "grateful-tee-peach",
+  "name": "Grateful Tee (Peach)",
+  "price": "$25.00",
+  "image": "/assets/img/shop/cut-9c43ab3de466.webp"
+ },
+ {
+  "id": "grateful-tee-yellow",
+  "name": "Grateful Tee (Yellow)",
+  "price": "$25.00",
+  "image": "/assets/img/shop/cut-dd19302381c0.webp"
+ },
+ {
+  "id": "kem-hoodie-black",
+  "name": "KEM Hoodie (Black)",
+  "price": "$35.00",
+  "image": "/assets/img/shop/cut-de1484c4b7e5.webp"
+ },
+ {
+  "id": "kem-hoodie-white",
+  "name": "KEM Hoodie (White)",
+  "price": "$35.00",
+  "image": "/assets/img/shop/cut-aa6de968c8af.webp"
+ },
+ {
+  "id": "thankful-hoodie",
+  "name": "Thankful Hoodie",
+  "price": "$35.00",
+  "image": "/assets/img/shop/cut-05659b73e134.webp"
+ },
+ {
+  "id": "grateful-hoodie-peach",
+  "name": "Grateful Hoodie (Peach)",
+  "price": "$35.00",
+  "image": "/assets/img/shop/cut-9669b1cf1649.webp"
+ },
+ {
+  "id": "grateful-hoodie-yellow",
+  "name": "Grateful Hoodie (Yellow)",
+  "price": "$35.00",
+  "image": "/assets/img/shop/cut-9669b1cf1649.webp"
+ }
+]

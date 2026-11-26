@@ -36,7 +36,7 @@
   --shadow-lift: 0 30px 64px -26px rgba(22,18,28,.38);
   --lg-mind: linear-gradient(115deg, #1a9d86, #0f6f7c);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #5b3a78, #7d5a9c);
+  --lg-mind2: linear-gradient(115deg, #301728, #4a2742); /* Blackcurrant Plum, PANTONE 20-0124 TPM */
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 
   --font-serif: "Bodoni Moda", "Didot", serif;
@@ -49,7 +49,7 @@ html[data-theme="coaching"] {
   --bg: #f6f2f5; --accent: #9c2aab; --accent-2: #10808f; --hot: #a8792c;
   --lg-mind: linear-gradient(115deg, #a8329e, #6d1d7e);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #64407f, #8a63a6);
+  --lg-mind2: linear-gradient(115deg, #301728, #4a2742);
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 }
 html[data-theme="mym"] {
@@ -94,7 +94,7 @@ html[data-theme="connect"] {
   --bg: #f3f0f6; --accent: #7d1f8e; --accent-2: #10808f; --hot: #a8792c;
   --lg-mind: linear-gradient(115deg, #10808f, #0d5f74);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #5b3a78, #7d5a9c);
+  --lg-mind2: linear-gradient(115deg, #301728, #4a2742); /* Blackcurrant Plum, PANTONE 20-0124 TPM */
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 }
 
@@ -662,3 +662,15 @@ html[data-site-palette] .btn.btn--book {
 }
 .btn.btn--book:hover { box-shadow: 0 14px 34px -10px rgba(125, 31, 142, .55); }
 .lede a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+/* Admin-managed content (event photos, sold-out products). */
+.event-card--photo { padding-top: 0; overflow: hidden; }
+.event-image {
+  display: block; width: calc(100% + 52px); max-width: none; margin: 0 -26px 6px;
+  aspect-ratio: 16 / 10; object-fit: cover; background: var(--card-line);
+}
+.event-location { font-weight: 500; }
+.product.is-sold-out { cursor: default; }
+.product.is-sold-out img { filter: grayscale(.85); opacity: .7; }
+.product.is-sold-out .product-cta { color: var(--muted); }
+.product[hidden] { display: none !important; }
