@@ -148,10 +148,20 @@ Deploy with the repository root as the Vercel Root Directory and keep
 Set these Vercel environment variables before using `/admin`:
 
 - `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` from an Upstash Redis database. Use a separate database for preview deployments if they should publish independently.
-- `DRKEM_ADMIN_PASSWORD`, a strong unique password shared privately with Dr. McKenzie.
-- `DRKEM_SESSION_SECRET`, a separate random secret generated with `openssl rand -hex 32`.
+  (The Vercel Marketplace Upstash integration's `KV_REST_API_URL` / `KV_REST_API_TOKEN` also work.)
+- `DRKEM_SESSION_SECRET`, a random secret generated with `openssl rand -hex 32`.
 
-Redeploy after setting the variables. Sign in at `/admin`, edit events or
+Redeploy after setting the variables. Dr. McKenzie then opens her one-time
+setup link, `/admin?setup=<token>`, and chooses her own password; it is stored
+only as a scrypt hash in Redis (`drkem:admin-password`). Print the token with:
+
+    DRKEM_SESSION_SECRET=<secret> UPSTASH_REDIS_REST_URL=x UPSTASH_REDIS_REST_TOKEN=x       node -e "console.log(require('./api/_lib/store').setupToken())"
+
+The link stops working once a password is set. She can change it under
+**Password** in the admin. If she forgets it, delete the `drkem:admin-password`
+key in the Upstash data browser and the same setup link works again.
+
+Sign in at `/admin`, edit events or
 appearance, and select **Publish changes**. Unchecked events are saved for
 later and are visible only in admin. Upcoming published events appear on the
 homepage, and `/events` lists upcoming and past published events. The

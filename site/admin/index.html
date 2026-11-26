@@ -28,6 +28,14 @@
     <button class="btn btn--solid" type="submit">Sign in</button>
   </form>
 
+  <form class="admin-panel admin-login" id="setup" hidden>
+    <h2>Create your password</h2>
+    <p class="admin-help">Welcome! Choose the password you'll use to sign in here. Use at least 10 characters. This link works only once.</p>
+    <label>New password <input name="password" type="password" autocomplete="new-password" minlength="10" maxlength="200" required></label>
+    <label>Type it again <input name="confirm" type="password" autocomplete="new-password" minlength="10" maxlength="200" required></label>
+    <button class="btn btn--solid" type="submit">Save password and sign in</button>
+  </form>
+
   <form id="editor" hidden novalidate>
     <nav class="admin-nav" aria-label="Admin sections">
       <a href="#events-panel">Events</a>
@@ -36,6 +44,7 @@
       <a href="#links-panel">Booking &amp; payment</a>
       <a href="#photos-panel">Photos</a>
       <a href="#shop-panel">Shop</a>
+      <a href="#password-panel">Password</a>
     </nav>
 
     <section class="admin-panel" id="events-panel" aria-labelledby="events-heading">
@@ -117,6 +126,14 @@
       <span id="dirty-note" hidden>You have unpublished changes.</span>
       <button class="btn btn--solid" type="submit">Publish changes</button>
     </div>
+  </form>
+
+  <form class="admin-panel admin-login" id="password-panel" hidden>
+    <h2>Change password</h2>
+    <label>Current password <input name="current" type="password" autocomplete="current-password" maxlength="200" required></label>
+    <label>New password <input name="password" type="password" autocomplete="new-password" minlength="10" maxlength="200" required></label>
+    <label>Type the new password again <input name="confirm" type="password" autocomplete="new-password" minlength="10" maxlength="200" required></label>
+    <button class="btn btn--line" type="submit">Change password</button>
   </form>
 
   <section class="admin-panel" id="addons" hidden>

@@ -1,5 +1,8 @@
 const { randomUUID } = require('node:crypto');
-const { redis, equal, signature, signedIn, sessionCookie, storageConfigured, adminConfigured } = require('./_lib/store');
+const {
+  redis, equal, passwordKey, storedPassword, hashPassword, checkPassword, setupToken,
+  signedIn, sessionCookie, newSession, storageConfigured, adminConfigured,
+} = require('./_lib/store');
 
 const contentKey = 'drkem:site-content:v1';
 const imagesKey = 'drkem:images';            // hash: image id -> upload time (ms)
@@ -156,7 +159,7 @@ module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   try {
     if (req.method === 'GET') {
-      if (admin && !signedIn(req)) return reply(401, { error: 'Sign in to continue.' });
+      if (admin && !(await signedIn(req))) return reply(401, { error: 'Sign in to continue.' });
       if (admin && !storageConfigured()) return reply(503, { error: 'Site storage needs to be configured.' });
       const content = storageConfigured() ? await readContent() : blank();
       if (admin) return reply(200, content);
@@ -180,30 +183,64 @@ module.exports = async (req, res) => {
     }
     if (!adminConfigured()) return reply(503, { error: 'Admin sign-in and storage need to be configured.' });
 
-    if (req.body.action === 'login') {
+    const { action } = req.body;
+    const password = req.body.password;
+    const validPassword = typeof password === 'string' && password.length >= 10 && password.length <= 200;
+
+    // Limit password guesses (sign-in, setup and password changes) per address.
+    if (['login', 'setup', 'password'].includes(action)) {
       const ip = String(req.headers['x-real-ip'] || req.socket?.remoteAddress || '').slice(0, 80);
       const attempts = await redis('EVAL',
         "local n=redis.call('INCR',KEYS[1]); if n==1 then redis.call('EXPIRE',KEYS[1],60) end; return n",
         1, 'drkem:signin:' + ip);
       if (attempts > 12) return reply(429, { error: 'Too many attempts. Try again in a minute.' });
-      const { password } = req.body;
-      if (typeof password !== 'string' || password.length > 512 || !equal(password, process.env.DRKEM_ADMIN_PASSWORD)) {
-        return reply(401, { error: 'Incorrect password.' });
+    }
+
+    if (action === 'setup') {
+      const { token } = req.body;
+      if (typeof token !== 'string' || token.length > 100 || !equal(token, setupToken())) {
+        return reply(403, { error: 'This setup link is not valid. Ask for a new one.' });
       }
-      const expiry = Date.now() + 8 * 60 * 60 * 1000;
-      res.setHeader('Set-Cookie', sessionCookie(expiry + '.' + signature(expiry) + '; Max-Age=28800'));
+      if (!validPassword) return reply(400, { error: 'Choose a password of at least 10 characters.' });
+      const stored = await hashPassword(password);
+      if (await redis('SET', passwordKey, stored, 'NX') !== 'OK') {
+        return reply(409, { error: 'A password has already been set. Sign in with it instead.' });
+      }
+      res.setHeader('Set-Cookie', newSession(stored));
       return reply(200, {});
     }
 
-    if (!signedIn(req)) return reply(401, { error: 'Your session expired. Sign in again.' });
+    if (action === 'login') {
+      const stored = await storedPassword();
+      if (!stored) return reply(401, { error: 'No password has been set yet. Open the setup link you were sent.' });
+      if (typeof password !== 'string' || password.length > 200 || !(await checkPassword(password, stored))) {
+        return reply(401, { error: 'Incorrect password.' });
+      }
+      res.setHeader('Set-Cookie', newSession(stored));
+      return reply(200, {});
+    }
 
-    if (req.body.action === 'upload') {
+    if (!(await signedIn(req))) return reply(401, { error: 'Your session expired. Sign in again.' });
+
+    if (action === 'password') {
+      const { current } = req.body;
+      if (typeof current !== 'string' || current.length > 200 || !(await checkPassword(current, await storedPassword()))) {
+        return reply(403, { error: 'Your current password is incorrect.' });
+      }
+      if (!validPassword) return reply(400, { error: 'Choose a new password of at least 10 characters.' });
+      const stored = await hashPassword(password);
+      await redis('SET', passwordKey, stored);
+      res.setHeader('Set-Cookie', newSession(stored));
+      return reply(200, {});
+    }
+
+    if (action === 'upload') {
       const id = await upload(req.body);
       if (!id) return reply(400, { error: 'That photo could not be used. Try a JPG or PNG under 10 MB.' });
       return reply(200, { id, url: '/api/image?id=' + id });
     }
 
-    if (req.body.action !== 'save') return reply(400, { error: 'Unknown request.' });
+    if (action !== 'save') return reply(400, { error: 'Unknown request.' });
     const content = normalize(req.body.content);
     const problem = validate(content);
     if (problem) return reply(400, { error: problem });

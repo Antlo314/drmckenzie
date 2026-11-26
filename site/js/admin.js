@@ -1,6 +1,9 @@
 (() => {
   const $ = selector => document.querySelector(selector);
   const login = $('#login');
+  const setup = $('#setup');
+  const passwordForm = $('#password-panel');
+  let setupToken = new URLSearchParams(location.search).get('setup');
   const editor = $('#editor');
   const eventList = $('#event-list');
   const status = $('#status');
@@ -47,8 +50,23 @@
   }
 
   function showEditor(visible) {
-    login.hidden = visible;
-    editor.hidden = logout.hidden = addons.hidden = !visible;
+    login.hidden = visible || !!setupToken;
+    setup.hidden = visible || !setupToken;
+    editor.hidden = logout.hidden = addons.hidden = passwordForm.hidden = !visible;
+    if (visible) forgetSetupLink();
+  }
+
+  // Leaves the one-time setup link out of the address bar and history.
+  function forgetSetupLink() {
+    if (setupToken) history.replaceState(null, '', location.pathname);
+    setupToken = null;
+  }
+
+  function newPassword(form) {
+    const { password, confirm } = form.elements;
+    if (password.value.length < 10) throw new Error('Use at least 10 characters for the password.');
+    if (password.value !== confirm.value) throw new Error('The two passwords do not match.');
+    return password.value;
   }
 
   function say(text) {
@@ -332,6 +350,29 @@
     login.reset();
     await load();
     say('');
+  });
+
+  action(setup, async () => {
+    const password = newPassword(setup);
+    try {
+      await request({ action: 'setup', token: setupToken, password });
+    } catch (error) {
+      if (error.status === 409) { // already set: fall back to normal sign-in
+        forgetSetupLink();
+        showEditor(false);
+      }
+      throw error;
+    }
+    setup.reset();
+    await load();
+    say('Your password is saved. Use it to sign in here from now on.');
+  });
+
+  action(passwordForm, async () => {
+    const password = newPassword(passwordForm);
+    await request({ action: 'password', current: passwordForm.elements.current.value, password });
+    passwordForm.reset();
+    say('Password changed. Use the new password next time you sign in.');
   });
 
   action(editor, async () => {
