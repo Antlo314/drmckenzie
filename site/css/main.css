@@ -36,7 +36,7 @@
   --shadow-lift: 0 30px 64px -26px rgba(22,18,28,.38);
   --lg-mind: linear-gradient(115deg, #1a9d86, #0f6f7c);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #8a6aa3, #b195c6);
+  --lg-mind2: linear-gradient(115deg, #5b3a78, #7d5a9c);
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 
   --font-serif: "Bodoni Moda", "Didot", serif;
@@ -49,7 +49,7 @@ html[data-theme="coaching"] {
   --bg: #f6f2f5; --accent: #9c2aab; --accent-2: #10808f; --hot: #a8792c;
   --lg-mind: linear-gradient(115deg, #a8329e, #6d1d7e);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #9a6fae, #c19ad0);
+  --lg-mind2: linear-gradient(115deg, #64407f, #8a63a6);
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 }
 html[data-theme="mym"] {
@@ -94,7 +94,7 @@ html[data-theme="connect"] {
   --bg: #f3f0f6; --accent: #7d1f8e; --accent-2: #10808f; --hot: #a8792c;
   --lg-mind: linear-gradient(115deg, #10808f, #0d5f74);
   --lg-your: linear-gradient(180deg, #b8862f, #96661f);
-  --lg-mind2: linear-gradient(115deg, #8a6aa3, #b195c6);
+  --lg-mind2: linear-gradient(115deg, #5b3a78, #7d5a9c);
   --lg-kem: linear-gradient(115deg, #b8862f, #d8a54a);
 }
 
@@ -652,3 +652,13 @@ html[data-site-palette] .btn--solid {
 .consulting-logo { margin: 30px 0 0; max-width: 420px; }
 .consulting-logo img { display: block; width: 100%; height: auto; border-radius: 18px; box-shadow: var(--shadow); }
 .event-description { white-space: pre-line; }
+
+/* "Book Dr. Kem" keeps its signature purple-to-green blend on every page,
+   whatever palette the admin dashboard publishes (Dr. Kem's request, Nov 25). */
+.btn.btn--book,
+html[data-site-palette] .btn.btn--book {
+  background: linear-gradient(115deg, #7d1f8e, #12894a);
+  color: #fff;
+}
+.btn.btn--book:hover { box-shadow: 0 14px 34px -10px rgba(125, 31, 142, .55); }
+.lede a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
