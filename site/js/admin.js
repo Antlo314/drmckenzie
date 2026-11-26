@@ -242,6 +242,7 @@
         <img alt="" loading="lazy">
         <p class="product-admin-name"></p>
         <label class="product-admin-price">Price <input data-field="price" maxlength="12" inputmode="decimal"></label>
+        <label class="product-admin-url">Checkout link <input data-field="url" type="url" maxlength="500" placeholder="Order by email"></label>
         <label class="check-label"><input type="checkbox" data-field="soldOut"> Sold out</label>
         <label class="check-label"><input type="checkbox" data-field="hidden"> Hide</label>`;
       row.querySelector('img').src = product.image;
@@ -249,6 +250,7 @@
       const price = row.querySelector('[data-field="price"]');
       price.placeholder = product.price;
       price.value = settings.price || '';
+      row.querySelector('[data-field="url"]').value = settings.url || '';
       row.querySelector('[data-field="soldOut"]').checked = settings.soldOut === true;
       row.querySelector('[data-field="hidden"]').checked = settings.hidden === true;
       return row;
@@ -301,9 +303,10 @@
     content.products = {};
     for (const row of document.querySelectorAll('.product-admin')) {
       const price = row.querySelector('[data-field="price"]').value.trim();
+      const url = row.querySelector('[data-field="url"]').value.trim();
       const soldOut = row.querySelector('[data-field="soldOut"]').checked;
       const hidden = row.querySelector('[data-field="hidden"]').checked;
-      if (price || soldOut || hidden) content.products[row.dataset.id] = { price, soldOut, hidden };
+      if (price || url || soldOut || hidden) content.products[row.dataset.id] = { price, url, soldOut, hidden };
     }
     return content;
   }
@@ -320,7 +323,10 @@
         if (value && !/^https:\/\//i.test(value)) return `Links must start with https:// (check “${value.slice(0, 40)}”).`;
       }
     }
-    for (const [id, { price }] of Object.entries(content.products)) {
+    for (const [id, { price, url }] of Object.entries(content.products)) {
+      if (url && !/^https:\/\//i.test(url)) {
+        return `Checkout links must start with https:// (check ${products.find(product => product.id === id)?.name || 'a product'}).`;
+      }
       if (price && !/^\$?\d{1,5}(\.\d{2})?$/.test(price)) {
         return `Write prices like 25.00 (check ${products.find(product => product.id === id)?.name || 'a product'}).`;
       }

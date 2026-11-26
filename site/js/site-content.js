@@ -1,5 +1,5 @@
 // Applies what Dr. Kem publishes from /admin: colors, announcement, events,
-// contact details, social links, booking and payment links, photos and shop
+// contact details, social links, booking and donation links, photos and shop
 // settings. Anything left blank in the admin keeps what the page already shows.
 (async () => {
   const root = document.documentElement;
@@ -93,6 +93,13 @@
     if (settings.price) {
       const price = product.querySelector('.product-price');
       if (price) price.textContent = settings.price.startsWith('$') ? settings.price : '$' + settings.price;
+    }
+    if (settings.url) {
+      product.href = settings.url;
+      product.target = '_blank';
+      product.rel = 'noopener';
+      const cta = product.querySelector('.product-cta');
+      if (cta) cta.textContent = 'BUY WITH PAYPAL →';
     }
     if (settings.soldOut) {
       product.removeAttribute('href');

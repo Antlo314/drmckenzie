@@ -10,7 +10,7 @@ const imageKey = id => 'drkem:img:' + id;
 
 // Editable photo slots. Each matches an <img data-photo="..."> on the site.
 const photoSlots = ['home-about', 'home-mym', 'home-night', 'counseling', 'booking'];
-const linkKeys = ['consult', 'coachingCall', 'paypal', 'donate'];
+const linkKeys = ['consult', 'coachingCall', 'donate'];
 const socialKeys = ['instagram', 'facebook', 'tiktok', 'linkedin'];
 const imageTypes = { 'image/webp': 'RIFF', 'image/jpeg': '\xff\xd8\xff', 'image/png': '\x89PNG' };
 const maxImageBytes = 1_500_000;
@@ -39,7 +39,8 @@ function normalize(stored) {
     social: { ...base.social, ...stored.social },
     links: { ...base.links, ...stored.links },
     photos: { ...stored.photos },
-    products: { ...stored.products },
+    products: Object.fromEntries(Object.entries(stored.products || {})
+      .map(([id, product]) => [id, { url: '', ...product }])),
   };
 }
 
@@ -101,6 +102,7 @@ function validate(content) {
         !string(product.price, 12) || (product.price && !/^\$?\d{1,5}(\.\d{2})?$/.test(product.price))) {
       return 'Shop prices should look like $25.00.';
     }
+    if (!httpsUrl(product.url)) return 'Shop checkout links must start with https://';
   }
   return '';
 }
@@ -118,8 +120,8 @@ function clean(content) {
     links: pick(content.links, linkKeys),
     photos: { ...content.photos },
     products: Object.fromEntries(Object.entries(content.products)
-      .map(([id, { price, hidden, soldOut }]) => [id, { price: price.trim(), hidden, soldOut }])
-      .filter(([, product]) => product.price || product.hidden || product.soldOut)),
+      .map(([id, { price, hidden, soldOut, url }]) => [id, { price: price.trim(), url: url.trim(), hidden, soldOut }])
+      .filter(([, product]) => product.price || product.url || product.hidden || product.soldOut)),
   };
 }
 

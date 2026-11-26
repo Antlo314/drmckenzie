@@ -102,9 +102,6 @@
       <label>Coaching: “Book a free consultation” buttons
         <input name="links.coachingCall" type="url" maxlength="500" placeholder="https://calendly.com/kemcoaching/coaching-phone-consult">
       </label>
-      <label>Shop: PayPal checkout link for products
-        <input name="links.paypal" type="url" maxlength="500" placeholder="https://www.paypal.com/ncp/payment/H49C57ALUWCBC">
-      </label>
       <label>Missions: “Donate with PayPal” button
         <input name="links.donate" type="url" maxlength="500" placeholder="https://www.paypal.com/ncp/payment/H49C57ALUWCBC">
       </label>
@@ -119,6 +116,7 @@
     <section class="admin-panel" id="shop-panel" aria-labelledby="shop-heading">
       <h2 id="shop-heading">Shop</h2>
       <p class="admin-help">Change a price, mark an item sold out, or hide it from the Shop page. Leave the price blank to keep the price shown in grey.</p>
+      <p class="admin-help"><strong>Checkout links:</strong> until an item has its own link, its button says “Order by email” and opens an email to you with the item name filled in. To take payment right away, create a PayPal “Buy Now” button for the item with its price (and a size option for tees and hoodies). In PayPal, go to <em>Pay &amp; Get Paid → Accept Payments → PayPal Buttons</em>, then copy the button's link and paste it here. Do not use your donation link; it lets the buyer choose the amount.</p>
       <div id="product-list" class="product-admin-list"></div>
     </section>
 
