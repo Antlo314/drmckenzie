@@ -12,7 +12,10 @@
   const template = $('#event-template');
   const addEvent = $('#add-event');
   const dirtyNote = $('#dirty-note');
-  const imageUrl = id => '/api/image?id=' + encodeURIComponent(id);
+  // Preview mode shows chosen photos from the browser itself (blob: URLs).
+  const imageUrl = id => id.startsWith('blob:') ? id : '/api/image?id=' + encodeURIComponent(id);
+  const previewNote = $('#preview-note');
+  let previewMode = false;
 
   const photoSlots = [
     { slot: 'home-about', label: 'Homepage: About Dr. Kem', src: '/assets/img/portrait-thankful.webp' },
@@ -117,6 +120,10 @@
   }
 
   async function uploadImage(file) {
+    if (previewMode) {
+      say('Preview only: the photo shows here, but it is not saved.');
+      return URL.createObjectURL(file);
+    }
     uploading += 1;
     say('Uploading photo…');
     try {
@@ -265,6 +272,7 @@
     ]);
     revision = content.revision;
     products = catalog;
+    previewMode = content.preview === true;
     for (const key of ['theme', 'accent', 'secondary', 'announcement']) editor.elements[key].value = content[key];
     for (const group of groups) {
       for (const [key, value] of Object.entries(content[group] || {})) {
@@ -281,6 +289,12 @@
     markDirty(false);
     updatePreview();
     showEditor(true);
+    if (previewMode) {
+      previewNote.hidden = false;
+      logout.hidden = passwordForm.hidden = true;
+      editor.querySelector('a[href="#password-panel"]').hidden = true;
+      editor.querySelector('.publish-bar [type="submit"]').textContent = 'Publishing is off in preview';
+    }
   }
 
   function collect() {
@@ -382,6 +396,7 @@
   });
 
   action(editor, async () => {
+    if (previewMode) throw new Error('This is a preview, so changes are not saved. Publishing turns on once the dashboard is connected to the site.');
     if (uploading) throw new Error('Wait for the photo upload to finish, then publish.');
     const content = collect();
     const issue = problem(content);
@@ -422,7 +437,7 @@
     } catch (error) { say(error.message); }
   });
   window.addEventListener('beforeunload', event => {
-    if (dirty) event.preventDefault();
+    if (dirty && !previewMode) event.preventDefault();
   });
   load().catch(error => {
     showEditor(false);

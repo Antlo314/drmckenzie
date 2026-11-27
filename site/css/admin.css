@@ -9,6 +9,8 @@
   scroll-margin-top: 70px;
 }
 .admin-login { max-width: 420px; }
+.admin-preview { border-color: var(--accent); gap: 6px; }
+.admin-preview p { margin: 0; color: var(--muted); }
 .admin [hidden] { display: none !important; }
 .admin label { display: grid; gap: 5px; font-weight: 500; }
 .admin small, .admin-help { color: var(--muted); font-weight: 400; font-size: 13.5px; margin: 0; }

@@ -161,8 +161,9 @@ module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   try {
     if (req.method === 'GET') {
+      // Before storage is connected, /admin opens as a look-around preview that cannot save.
+      if (admin && !adminConfigured()) return reply(200, { ...blank(), preview: true });
       if (admin && !(await signedIn(req))) return reply(401, { error: 'Sign in to continue.' });
-      if (admin && !storageConfigured()) return reply(503, { error: 'Site storage needs to be configured.' });
       const content = storageConfigured() ? await readContent() : blank();
       if (admin) return reply(200, content);
       // Visitors get a copy the CDN may keep for a few seconds.
